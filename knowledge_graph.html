@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FF6B6B", "font": {"color": "white"}, "id": "java", "label": "java", "shape": "dot", "size": 35, "title": "\u003cb\u003ejava\u003c/b\u003e\u003cbr\u003eType: project\u003cbr\u003eDomain: "}, {"color": "#073B4C", "font": {"color": "white"}, "id": "PasswordStrengthEvaluator", "label": "PasswordStrengthEvaluator", "shape": "dot", "size": 15, "title": "\u003cb\u003ePasswordStrengthEvaluator\u003c/b\u003e\u003cbr\u003eType: class"}, {"color": "#073B4C", "font": {"color": "white"}, "id": "TestPasswordEvaluator", "label": "TestPasswordEvaluator", "shape": "dot", "size": 15, "title": "\u003cb\u003eTestPasswordEvaluator\u003c/b\u003e\u003cbr\u003eType: class"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.io.IOException", "label": "java.io.IOException", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.io.IOException\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.io", "label": "java.io", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.io\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.net.URI", "label": "java.net.URI", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.net.URI\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.net.http.HttpClient", "label": "java.net.http.HttpClient", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.net.http.HttpClient\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.util.Random", "label": "java.util.Random", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.util.Random\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.net.http.HttpRequest", "label": "java.net.http.HttpRequest", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.net.http.HttpRequest\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.util.Scanner", "label": "java.util.Scanner", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.util.Scanner\u003c/b\u003e\u003cbr\u003eType: dependency"}, {"color": "#EF476F", "font": {"color": "white"}, "id": "java.net.http.HttpResponse", "label": "java.net.http.HttpResponse", "shape": "dot", "size": 15, "title": "\u003cb\u003ejava.net.http.HttpResponse\u003c/b\u003e\u003cbr\u003eType: dependency"}]);
+                  edges = new vis.DataSet([{"color": "#AAAAAA", "dashes": false, "from": "java", "title": "contains", "to": "PasswordStrengthEvaluator"}, {"color": "#AAAAAA", "dashes": false, "from": "java", "title": "contains", "to": "TestPasswordEvaluator"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.io.IOException"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.io"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.net.URI"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.net.http.HttpClient"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.util.Random"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.net.http.HttpRequest"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.util.Scanner"}, {"color": "#FF6B6B", "dashes": true, "from": "java", "title": "depends_on", "to": "java.net.http.HttpResponse"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 2, "borderWidthSelected": 4, "font": {"size": 16, "face": "arial"}}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.5}}, "smooth": false}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -100, "springLength": 150}, "minVelocity": 0.75, "solver": "forceAtlas2Based"}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

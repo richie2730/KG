@@ -1,0 +1,11 @@
+networkx
+matplotlib
+google-generativeai
+python-dotenv
+PyGithub
+networkx
+pydot
+graphviz
+pyvis
+javalang
+matplotlib
